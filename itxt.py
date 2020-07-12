@@ -67,7 +67,7 @@ def skip_APP0(file):
 
 def spew_COM(buf):
     spew(b'\xFF\xFE')
-    length = len(buf)
+    length = len(buf) + 2
     spew(struct.pack('>H', length))
     spew(buf)
 
@@ -104,6 +104,7 @@ def matchesMagic(file, magic):
 
 inputFileName = arg(1) or usage() or die('no input file specified', EXIT_NOINPUT)
 textFileName = arg(2) or usage() or die('no itxt content file specified', EXIT_NOTEXT)
+skipAPP0 = arg(3) or usage() or die('no itxt content file specified', EXIT_NOTEXT)
 
 inputFile = open(inputFileName, mode='rb')
 textFile = open(textFileName, mode='rb')
