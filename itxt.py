@@ -59,7 +59,6 @@ def skip_APP0(file):
     rawLength = file.read(2)
     # Length includes length marker
     length = struct.unpack('>H', rawLength)[0] - 2
-    print(length, file=sys.stderr)
     rawData = file.read(length)
     spew(marker)
     spew(rawLength)
