@@ -7,7 +7,7 @@
 ##  readable by most software to stdout.                                 ##
 ##                                                                       ##
 ##  Please note that for JPEG embedded payload shouldn't be larger than  ##
-##  65,536 bytes (64kb). For PNG limit is 4,294,967,296 bytes (~4Gb).    ##
+##  65,534 bytes (64kb). For PNG limit is 4,294,967,296 bytes (~4Gb).    ##
 ##                                                                       ##
 ##  © 2020 Anton Istomin                                                 ##
 ##\                                                                     /##
@@ -54,6 +54,17 @@ def spew_iTXt(buf):
     spew(buf)
     spew(struct.pack('>L', crc))
 
+def skip_APP0(file):
+    marker = file.read(2)
+    rawLength = file.read(2)
+    # Length includes length marker
+    length = struct.unpack('>H', rawLength)[0] - 2
+    print(length, file=sys.stderr)
+    rawData = file.read(length)
+    spew(marker)
+    spew(rawLength)
+    spew(rawData)
+
 def spew_COM(buf):
     spew(b'\xFF\xFE')
     length = len(buf)
@@ -77,6 +88,8 @@ def inject_iTXt(inputFile, textFile):
 def inject_COM(inputFile, textFile):
     inputFile.read(len(JPG_MAGIC))
     spew(JPG_MAGIC)
+
+    skip_APP0(inputFile)
 
     text = textFile.read()
     spew_COM(text)
