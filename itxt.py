@@ -104,7 +104,6 @@ def matchesMagic(file, magic):
 
 inputFileName = arg(1) or usage() or die('no input file specified', EXIT_NOINPUT)
 textFileName = arg(2) or usage() or die('no itxt content file specified', EXIT_NOTEXT)
-skipAPP0 = arg(3) or usage() or die('no itxt content file specified', EXIT_NOTEXT)
 
 inputFile = open(inputFileName, mode='rb')
 textFile = open(textFileName, mode='rb')
